@@ -43,6 +43,10 @@ public class DemoApplicationTests {
 				.andExpect(content().string(equalTo("Hello World")));
 	}
 
+	/**
+	 * 读取properties文件
+	 * @throws Exception
+     */
 	@Test
 	public void getBlog()throws Exception{
 		Assert.assertEquals(blogProperties.getName(), "zzl");
