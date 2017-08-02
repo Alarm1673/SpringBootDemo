@@ -25,4 +25,16 @@ public class BlogProperties {
     @Value("${com.zzl.blog.title}")
     private String title;
 
+    @Value("${com.zzl.blog.value}")
+    private String value;
+    @Value("${com.zzl.blog.number}")
+    private Integer number;
+    @Value("${com.zzl.blog.bignumber}")
+    private Long bignumber;
+    @Value("${com.zzl.blog.test1}")
+    private Integer test1;
+    @Value("${com.zzl.blog.test2}")
+    private Integer test2;
+
+
 }
