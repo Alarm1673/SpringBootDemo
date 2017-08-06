@@ -1,10 +1,7 @@
 package com.zzl.controller;
 
 import com.zzl.bean.User;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -36,6 +33,23 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String add(@ModelAttribute User user){
         users.put(user.getId(), user);
+        return "success";
+    }
+
+    @RequestMapping(value="/{id}", method=RequestMethod.PUT)
+    public String putUser(@PathVariable Long id, @ModelAttribute User user) {
+        // 处理"/users/{id}"的PUT请求，用来更新User信息
+        User u = users.get(id);
+        u.setName(user.getName());
+        u.setAge(user.getAge());
+        users.put(id, u);
+        return "success";
+    }
+
+    @RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+    public String deleteUser(@PathVariable Long id) {
+        // 处理"/users/{id}"的DELETE请求，用来删除User
+        users.remove(id);
         return "success";
     }
 

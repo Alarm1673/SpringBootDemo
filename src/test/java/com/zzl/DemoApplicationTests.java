@@ -88,6 +88,13 @@ public class DemoApplicationTests {
 		 * attention get() import static MockMvcRequestBuilders.*
 		 * Explain:
 		 * get(url): 创建一个get请求,
+		 * perform(): 执行一个RequestBuilder请求,会自动执行SpringMvc的流程并映射到相应的控制器执行处理。
+		 * get(): 声明发送一个get请求的方法。根据uri模板和uri变量值得到一个GET请求方式,另外还提供了其他的请求方法:比如 post, put, delete等
+		 * param(): 添加request的参数
+		 * andExpect(): 添加ResultMatcher验证规则,验证控制器执行完成后结果是否正确(对返回的数据进行的判断)。
+		 * andDo(): 添加ResultHandler结果处理器,比如调试时打印结果到控制台(对返回的数据进行的判断)。
+		 * andReturn(): 最后返回相应的MvcResult;然后进行自定义验证,进行下一步的异步处理(对返回的数据进行的判断)。
+		 *
 		 */
 		requestBuilder = get("/users/");
 		String strGet = mvc.perform(requestBuilder)
@@ -97,7 +104,7 @@ public class DemoApplicationTests {
 				.andReturn().getResponse().getContentAsString();//将返回的数据转换成字符串
 		System.out.println("strGet :" + strGet);
 
-		requestBuilder = post("/users/add/")
+		requestBuilder = post("/users/add")
 				.param("id","1")
 				.param("name","zzl")
 				.param("age","24");
@@ -115,6 +122,30 @@ public class DemoApplicationTests {
 				.andDo(print())  //打印出请求和相应的内容
 				.andReturn().getResponse().getContentAsString();//将返回的数据转换成字符串
 		System.out.println("strGet2 :" + strGet2);
+
+		requestBuilder = put("/users/update");
+		// 4、put修改id为1的user
+		requestBuilder = put("/users/1")
+				.param("name", "测试")
+				.param("age", "25");
+		String strPut = mvc.perform(requestBuilder)
+				.andExpect(content().string(equalTo("success")))
+				.andReturn().getResponse().getContentAsString();
+		System.out.println("strPut :" + strPut);
+
+		requestBuilder = delete("/users/1");
+		String strDel = mvc.perform(requestBuilder)
+				.andExpect(content().string(equalTo("success")))
+				.andReturn().getResponse().getContentAsString();
+		System.out.println("strDel :" + strDel);
+
+		requestBuilder = get("/users/");
+		String strGet3 = mvc.perform(requestBuilder)
+				.andExpect(status().isOk()) //返回的状态码是200
+				.andDo(print())  //打印出请求和相应的内容
+				.andReturn().getResponse().getContentAsString();//将返回的数据转换成字符串
+		System.out.println("strGet3 :" + strGet3);
+
 
 	}
 
